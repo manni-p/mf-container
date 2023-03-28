@@ -7,7 +7,7 @@ dotenv.config();
 const deps = require("./package.json").dependencies;
 module.exports = {
   output: {
-    publicPath: "http://localhost:3000/",
+    publicPath: `${process.env.CONTAINER_URL}`,
   },
   resolve: {
     extensions: [".tsx", ".ts", ".jsx", ".js", ".json"],
