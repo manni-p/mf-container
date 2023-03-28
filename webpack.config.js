@@ -1,5 +1,8 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
+const webpack = require('webpack');
+const dotenv = require('dotenv');
+dotenv.config();
 
 const deps = require("./package.json").dependencies;
 module.exports = {
@@ -40,8 +43,8 @@ module.exports = {
       name: "container",
       filename: "remoteEntry.js",
       remotes: {
-        counter: "counter@http://localhost:3002/remoteEntry.js",
-        counterTwo: "counterTwo@http://localhost:3001/remoteEntry.js",
+        counter: `counter@${process.env.COUNTER_URL}/remoteEntry.js`,
+        counterTwo: `counterTwo@${process.env.COUNTERTWO_URL}/remoteEntry.js`,
       },
       exposes: {},
       shared: {
@@ -59,5 +62,8 @@ module.exports = {
     new HtmlWebPackPlugin({
       template: "./src/index.html",
     }),
+    new webpack.DefinePlugin({
+      'process.env': JSON.stringify(process.env)
+   })
   ],
 };
